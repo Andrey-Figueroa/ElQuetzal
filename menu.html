@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Quetzal — Menú Principal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="menu.css" />
+  </head>
+  <body>
+    <!-- ─── FONDO ANIMADO ─────────────────────────────────── -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- ─── CONTENIDO ────────────────────────────────────── -->
+    <div class="wrapper">
+
+      <!-- CABECERA -->
+      <header class="header">
+        <div class="brand">
+          <div class="brand-icon">🦜</div>
+          <div class="brand-text">
+            <h1 class="brand-name">El Quetzal</h1>
+            <p class="brand-sub">Sistema de Administración</p>
+          </div>
+        </div>
+        <div class="header-meta">
+          <span id="fecha-hora" class="fecha-hora"></span>
+        </div>
+      </header>
+
+      <!-- SALUDO -->
+      <div class="saludo">
+        <p>¿Qué vas a hacer hoy?</p>
+      </div>
+
+      <!-- ACCESO RÁPIDO: DASHBOARD DIARIO -->
+      <a href="../Cierre/cierre.html" class="dashboard-btn" id="btn-dashboard">
+        <span class="db-icon">📊</span>
+        <span class="db-text">
+          <strong>Ver dashboard diario</strong>
+          <small>Resumen de ventas de hoy</small>
+        </span>
+        <span class="db-arrow">→</span>
+      </a>
+
+      <!-- GRID DE MÓDULOS -->
+      <main class="modules-grid">
+
+        <!-- Punto de Venta -->
+        <a href="../Venta/venta.html" class="module-card" id="card-venta">
+          <div class="card-glow glow-blue"></div>
+          <div class="card-icon">🛒</div>
+          <div class="card-body">
+            <h2 class="card-title">Punto de Venta</h2>
+            <p class="card-desc">Registrá ventas, escaneá productos y procesá pagos.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Inventario -->
+        <a href="../Inventario/index.html" class="module-card" id="card-inventario">
+          <div class="card-glow glow-green"></div>
+          <div class="card-icon">📦</div>
+          <div class="card-body">
+            <h2 class="card-title">Inventario</h2>
+            <p class="card-desc">Gestioná productos, stock mínimo y categorías.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Cierre de Caja -->
+        <a href="../Cierre/cierre.html" class="module-card" id="card-cierre">
+          <div class="card-glow glow-purple"></div>
+          <div class="card-icon">📊</div>
+          <div class="card-body">
+            <h2 class="card-title">Cierre Diario</h2>
+            <p class="card-desc">Resumen diario, utilidades por método de pago y ventas.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Intercambios -->
+        <a href="../Intercambio/intercambio.html" class="module-card" id="card-intercambios">
+          <div class="card-glow glow-orange"></div>
+          <div class="card-icon">⇄</div>
+          <div class="card-body">
+            <h2 class="card-title">Intercambios</h2>
+            <p class="card-desc">Registrá cambios de método de pago (SINPE ↔ Efectivo) sin afectar utilidades.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Reportes -->
+        <a href="../Reportes/reportes.html" class="module-card" id="card-reportes">
+          <div class="card-glow glow-teal"></div>
+          <div class="card-icon">📈</div>
+          <div class="card-body">
+            <h2 class="card-title">Reportes</h2>
+            <p class="card-desc">Historial filtrable por fechas, totales del período y detalle de transacciones.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Configuración (futuro) -->
+        <a href="#" class="module-card coming-soon" id="card-config">
+          <div class="card-glow glow-gray"></div>
+          <div class="card-icon">⚙️</div>
+          <div class="card-body">
+            <h2 class="card-title">Configuración</h2>
+            <p class="card-desc">Nombre del negocio, impresora, usuarios y permisos.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-soon">Próximamente</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+      </main>
+
+      <!-- PIE -->
+      <footer class="footer">
+        <span>El Quetzal &copy; 2025 · NeuraLoom</span>
+      </footer>
+    </div>
+
+    <script src="menu.js"></script>
+  </body>
+</html>

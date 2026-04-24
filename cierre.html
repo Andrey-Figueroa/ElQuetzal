@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Quetzal — Dashboard Diario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="cierre.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="wrapper">
+
+      <!-- CABECERA -->
+      <header class="topbar">
+        <a href="../Menu/menu.html" class="back-btn">🦜 Menú Principal</a>
+        <div class="topbar-center">
+          <span class="topbar-icon">📊</span>
+          <div>
+            <h1 class="topbar-title">Dashboard Diario</h1>
+            <p id="fecha-titulo" class="topbar-sub"></p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="refresh-btn" id="btn-refresh" onclick="cargarDatos()">
+            <span id="refresh-icon">↻</span> Actualizar
+          </button>
+          <button class="cierre-btn" id="btn-cierre" onclick="confirmarCierre()">
+            🔒 Cerrar el Día
+          </button>
+        </div>
+      </header>
+
+      <!-- ESTADO DE CARGA -->
+      <div id="estado-carga" class="estado-carga">
+        <div class="spinner"></div>
+        <p>Cargando ventas de hoy…</p>
+      </div>
+
+      <!-- CONTENIDO PRINCIPAL (oculto hasta cargar) -->
+      <div id="contenido" style="display:none">
+
+        <!-- KPI CARDS - FINANZAS -->
+        <section class="kpis-grid kpis-finanzas">
+          <div class="kpi-card kpi-main">
+            <div class="kpi-label">💰 Ingreso Bruto</div>
+            <div class="kpi-value" id="kpi-total">₡0</div>
+            <div class="kpi-sub" id="kpi-count-sub"></div>
+          </div>
+
+          <div class="kpi-card kpi-costo">
+            <div class="kpi-label">📦 Costo (Inversión)</div>
+            <div class="kpi-value kpi-sm" id="kpi-costo">₡0</div>
+            <div class="kpi-sub">Mercadería vendida</div>
+          </div>
+
+          <div class="kpi-card kpi-utilidad">
+            <div class="kpi-label">✨ Utilidad Real</div>
+            <div class="kpi-value kpi-sm" id="kpi-utilidad">₡0</div>
+            <div class="kpi-sub">Ganancia limpia</div>
+          </div>
+        </section>
+
+        <!-- KPI CARDS - OPERACIONES -->
+        <section class="kpis-grid kpis-operaciones">
+          <div class="kpi-card">
+            <div class="kpi-label">🧾 Ventas</div>
+            <div class="kpi-value kpi-sm" id="kpi-count">0</div>
+            <div class="kpi-sub">transacciones</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-label">💵 Efectivo</div>
+            <div class="kpi-value kpi-sm" id="kpi-efectivo">₡0</div>
+            <div class="kpi-breakdown">
+              <span class="break-util" id="kpi-efectivo-utilidad">✨ ₡0</span>
+              <span class="break-cost" id="kpi-efectivo-costo">📦 ₡0</span>
+            </div>
+            <div class="kpi-bar-wrap">
+              <div class="kpi-bar bar-blue" id="bar-efectivo"></div>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-label">💳 Tarjeta</div>
+            <div class="kpi-value kpi-sm" id="kpi-tarjeta">₡0</div>
+            <div class="kpi-breakdown">
+              <span class="break-util" id="kpi-tarjeta-utilidad">✨ ₡0</span>
+              <span class="break-cost" id="kpi-tarjeta-costo">📦 ₡0</span>
+            </div>
+            <div class="kpi-bar-wrap">
+              <div class="kpi-bar bar-purple" id="bar-tarjeta"></div>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-label">📱 Sinpe</div>
+            <div class="kpi-value kpi-sm" id="kpi-sinpe">₡0</div>
+            <div class="kpi-breakdown">
+              <span class="break-util" id="kpi-sinpe-utilidad">✨ ₡0</span>
+              <span class="break-cost" id="kpi-sinpe-costo">📦 ₡0</span>
+            </div>
+            <div class="kpi-bar-wrap">
+              <div class="kpi-bar bar-green" id="bar-sinpe"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TABLA DE VENTAS -->
+        <section class="ventas-section">
+          <div class="section-header">
+            <h2 class="section-title">Ventas de hoy</h2>
+            <span class="section-badge" id="badge-count">0 transacciones</span>
+          </div>
+
+          <div class="table-wrap">
+            <table class="ventas-table">
+              <thead>
+                <tr>
+                  <th>Hora</th>
+                  <th>Productos</th>
+                  <th>Método</th>
+                  <th class="text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody id="ventas-list">
+                <!-- JS lo rellena -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Estado vacío -->
+          <div id="estado-vacio" class="estado-vacio" style="display:none">
+            <div class="vacio-icon">🛒</div>
+            <p class="vacio-text">No hay ventas registradas hoy</p>
+            <p class="vacio-sub">Las ventas aparecerán aquí en tiempo real</p>
+          </div>
+
+        </section>
+
+        <!-- INTERCAMBIOS DEL DÍA -->
+        <section class="intercambios-section" id="intercambios-section" style="display:none">
+          <div class="section-header">
+            <h2 class="section-title">⇄ Intercambios del Día</h2>
+            <span class="section-badge" id="badge-intercambios">0 intercambios</span>
+          </div>
+          <div class="table-wrap">
+            <table class="ventas-table">
+              <thead>
+                <tr>
+                  <th>Hora</th>
+                  <th>Recibí</th>
+                  <th>Entregué</th>
+                  <th>Nota</th>
+                </tr>
+              </thead>
+              <tbody id="intercambios-list">
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ÚLTIMA ACTUALIZACIÓN -->
+        <p class="ultima-actualizacion" id="ultima-act"></p>
+
+      </div><!-- /contenido -->
+
+    </div><!-- /wrapper -->
+
+    <!-- MODAL CONFIRMACIÓN DE CIERRE -->
+    <div class="modal-overlay" id="modal-cierre" onclick="handleOverlayClick(event)">
+      <div class="modal-box">
+        <div class="modal-icon">🔒</div>
+        <h2 class="modal-titulo">Cerrar el Día</h2>
+        <p class="modal-desc">
+          Se enviará un reporte completo a
+          <strong>andreyf1887@gmail.com</strong>
+          y se abrirá el formulario de Tally para el arqueo de caja.
+        </p>
+        <div class="modal-status" id="modal-status"></div>
+        <div class="modal-actions">
+          <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+          <button class="btn-confirmar" id="btn-confirmar-cierre" onclick="ejecutarCierre()">
+            Confirmar y Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="cierre.js"></script>
+  </body>
+</html>

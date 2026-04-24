@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Quetzal — Reportes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="reportes.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="wrapper">
+
+      <!-- CABECERA -->
+      <header class="topbar">
+        <a href="../Menu/menu.html" class="back-btn">🦜 Menú Principal</a>
+        <div class="topbar-center">
+          <span class="topbar-icon">📈</span>
+          <div>
+            <h1 class="topbar-title">Reportes Históricos</h1>
+            <p class="topbar-sub">Consultá ventas e intercambios por rango de fechas</p>
+          </div>
+        </div>
+        <div class="topbar-spacer"></div>
+      </header>
+
+      <!-- PANEL DE FILTROS -->
+      <div class="filtros-card">
+        <div class="filtros-row">
+          <div class="filtro-group">
+            <label class="filtro-label" for="fecha-desde">📅 Desde</label>
+            <input type="date" id="fecha-desde" class="filtro-input" />
+          </div>
+          <div class="filtro-sep">—</div>
+          <div class="filtro-group">
+            <label class="filtro-label" for="fecha-hasta">📅 Hasta</label>
+            <input type="date" id="fecha-hasta" class="filtro-input" />
+          </div>
+          <button class="btn-consultar" id="btn-consultar" onclick="consultar()">
+            🔍 Consultar
+          </button>
+        </div>
+
+        <!-- Accesos rápidos -->
+        <div class="shortcuts">
+          <button class="shortcut-btn" onclick="setPeriodo('hoy')">Hoy</button>
+          <button class="shortcut-btn" onclick="setPeriodo('semana')">Esta semana</button>
+          <button class="shortcut-btn" onclick="setPeriodo('mes')">Este mes</button>
+          <button class="shortcut-btn" onclick="setPeriodo('mes-anterior')">Mes anterior</button>
+        </div>
+      </div>
+
+      <!-- ESTADO INICIAL -->
+      <div id="estado-inicial" class="estado-inicial">
+        <div class="ei-icon">📊</div>
+        <p class="ei-titulo">Seleccioná un período</p>
+        <p class="ei-sub">Usá los filtros de arriba o los accesos rápidos para consultar el historial.</p>
+      </div>
+
+      <!-- SPINNER -->
+      <div id="estado-carga" class="estado-carga" style="display:none">
+        <div class="spinner"></div>
+        <p>Consultando datos…</p>
+      </div>
+
+      <!-- CONTENIDO RESULTADOS -->
+      <div id="contenido" style="display:none">
+
+        <!-- BANNER PERÍODO -->
+        <div class="periodo-banner" id="periodo-banner"></div>
+
+        <!-- KPIs DEL PERÍODO -->
+        <section class="kpis-grid kpis-finanzas">
+          <div class="kpi-card kpi-main">
+            <div class="kpi-label">💰 Ingreso Bruto</div>
+            <div class="kpi-value" id="kpi-total">₡0</div>
+            <div class="kpi-sub" id="kpi-count-sub">0 transacciones</div>
+          </div>
+          <div class="kpi-card kpi-costo">
+            <div class="kpi-label">📦 Costo Total</div>
+            <div class="kpi-value kpi-sm" id="kpi-costo">₡0</div>
+            <div class="kpi-sub">Mercadería vendida</div>
+          </div>
+          <div class="kpi-card kpi-utilidad">
+            <div class="kpi-label">✨ Utilidad Real</div>
+            <div class="kpi-value kpi-sm" id="kpi-utilidad">₡0</div>
+            <div class="kpi-sub">Ganancia limpia</div>
+          </div>
+        </section>
+
+        <!-- KPIs POR MÉTODO -->
+        <section class="kpis-grid kpis-operaciones">
+          <div class="kpi-card">
+            <div class="kpi-label">🧾 Ventas</div>
+            <div class="kpi-value kpi-sm" id="kpi-count">0</div>
+            <div class="kpi-sub">transacciones</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">💵 Efectivo</div>
+            <div class="kpi-value kpi-sm" id="kpi-efectivo">₡0</div>
+            <div class="kpi-breakdown">
+              <span class="break-util" id="kpi-efectivo-u">✨ ₡0</span>
+              <span class="break-cost" id="kpi-efectivo-c">📦 ₡0</span>
+            </div>
+            <div class="kpi-bar-wrap"><div class="kpi-bar bar-blue" id="bar-efectivo"></div></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">💳 Tarjeta</div>
+            <div class="kpi-value kpi-sm" id="kpi-tarjeta">₡0</div>
+            <div class="kpi-breakdown">
+              <span class="break-util" id="kpi-tarjeta-u">✨ ₡0</span>
+              <span class="break-cost" id="kpi-tarjeta-c">📦 ₡0</span>
+            </div>
+            <div class="kpi-bar-wrap"><div class="kpi-bar bar-purple" id="bar-tarjeta"></div></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">📱 SINPE</div>
+            <div class="kpi-value kpi-sm" id="kpi-sinpe">₡0</div>
+            <div class="kpi-breakdown">
+              <span class="break-util" id="kpi-sinpe-u">✨ ₡0</span>
+              <span class="break-cost" id="kpi-sinpe-c">📦 ₡0</span>
+            </div>
+            <div class="kpi-bar-wrap"><div class="kpi-bar bar-green" id="bar-sinpe"></div></div>
+          </div>
+        </section>
+
+        <!-- TABLA HISTÓRICO -->
+        <section class="historico-section">
+          <div class="section-header">
+            <h2 class="section-title">Transacciones del Período</h2>
+            <span class="section-badge" id="badge-count">0 registros</span>
+          </div>
+
+          <div class="table-wrap" id="table-wrap">
+            <table class="hist-table" id="hist-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Tipo</th>
+                  <th>Descripción</th>
+                  <th>Método de Pago</th>
+                  <th class="text-right">Monto</th>
+                  <th>Categoría</th>
+                </tr>
+              </thead>
+              <tbody id="hist-body"></tbody>
+            </table>
+          </div>
+
+          <div id="estado-vacio" class="estado-vacio" style="display:none">
+            <div class="vacio-icon">📭</div>
+            <p class="vacio-text">Sin resultados para el período seleccionado</p>
+            <p class="vacio-sub">Probá con un rango de fechas diferente</p>
+          </div>
+        </section>
+
+      </div><!-- /contenido -->
+
+    </div><!-- /wrapper -->
+
+    <script src="reportes.js"></script>
+  </body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Quetzal — Intercambio de Método de Pago</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="intercambio.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="wrapper">
+
+      <!-- CABECERA -->
+      <header class="topbar">
+        <a href="../Menu/menu.html" class="back-btn">🦜 Menú Principal</a>
+        <div class="topbar-center">
+          <span class="topbar-icon">⇄</span>
+          <div>
+            <h1 class="topbar-title">Intercambio de Método de Pago</h1>
+            <p class="topbar-sub">Registrá cambios de efectivo ↔ SINPE ↔ Tarjeta sin afectar utilidades</p>
+          </div>
+        </div>
+        <div class="topbar-spacer"></div>
+      </header>
+
+      <!-- INFO BANNER -->
+      <div class="info-banner">
+        <span class="info-icon">ℹ️</span>
+        <p>Un intercambio es una <strong>operación neutral</strong>: el cliente deposita por un método y vos
+        devolvés por otro. No afecta el ingreso bruto ni la utilidad del día.</p>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class="form-card" id="form-card">
+        <h2 class="form-title">Nuevo Intercambio</h2>
+
+        <!-- FILA: Recibí / Entregué -->
+        <div class="intercambio-grid">
+
+          <!-- RECIBÍ -->
+          <div class="metodo-panel entrada-panel">
+            <h3 class="panel-title">📥 Recibí</h3>
+            <p class="panel-sub">Método con que el cliente pagó</p>
+            <div class="metodo-selector" id="selector-entrada">
+              <button class="metodo-btn active" data-metodo="sinpe" onclick="seleccionarEntrada('sinpe')">📱 SINPE</button>
+              <button class="metodo-btn" data-metodo="efectivo" onclick="seleccionarEntrada('efectivo')">💵 Efectivo</button>
+              <button class="metodo-btn" data-metodo="tarjeta" onclick="seleccionarEntrada('tarjeta')">💳 Tarjeta</button>
+            </div>
+            <div class="monto-group">
+              <label class="monto-label">Monto recibido (₡)</label>
+              <input
+                type="number"
+                id="monto-entrada"
+                class="monto-input"
+                placeholder="0"
+                min="0"
+                step="50"
+                oninput="actualizarPreview()"
+              />
+            </div>
+          </div>
+
+          <!-- FLECHA -->
+          <div class="flecha-centro">
+            <div class="flecha-icon">→</div>
+          </div>
+
+          <!-- ENTREGUÉ -->
+          <div class="metodo-panel salida-panel">
+            <h3 class="panel-title">📤 Entregué</h3>
+            <p class="panel-sub">Método con que devolviste</p>
+            <div class="metodo-selector" id="selector-salida">
+              <button class="metodo-btn active" data-metodo="efectivo" onclick="seleccionarSalida('efectivo')">💵 Efectivo</button>
+              <button class="metodo-btn" data-metodo="sinpe" onclick="seleccionarSalida('sinpe')">📱 SINPE</button>
+              <button class="metodo-btn" data-metodo="tarjeta" onclick="seleccionarSalida('tarjeta')">💳 Tarjeta</button>
+            </div>
+            <div class="monto-group">
+              <label class="monto-label">Monto entregado (₡)</label>
+              <input
+                type="number"
+                id="monto-salida"
+                class="monto-input"
+                placeholder="0"
+                min="0"
+                step="50"
+                oninput="actualizarPreview()"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTA -->
+        <div class="nota-group">
+          <label class="monto-label" for="nota-intercambio">Nota / Descripción (opcional)</label>
+          <input
+            type="text"
+            id="nota-intercambio"
+            class="nota-input"
+            placeholder="Ej: Cliente Juan García, cambio de SINPE a efectivo"
+            maxlength="200"
+          />
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="preview-card" id="preview-card">
+          <p class="preview-texto" id="preview-texto">
+            Ingresá los montos para ver el resumen
+          </p>
+        </div>
+
+        <!-- ERROR -->
+        <div class="error-msg" id="error-msg" style="display:none"></div>
+
+        <!-- BOTÓN GUARDAR -->
+        <button class="btn-guardar" id="btn-guardar" onclick="guardarIntercambio()">
+          ⇄ Registrar Intercambio
+        </button>
+      </div>
+
+      <!-- HISTORIAL DEL DÍA -->
+      <section class="historial-section">
+        <div class="section-header">
+          <h2 class="section-title">Intercambios de Hoy</h2>
+          <span class="section-badge" id="badge-historial">0 registros</span>
+        </div>
+
+        <div id="historial-loading" class="historial-loading">
+          <div class="spinner-sm"></div>
+          <span>Cargando…</span>
+        </div>
+
+        <div class="table-wrap" id="historial-wrap" style="display:none">
+          <table class="hist-table">
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>Recibí</th>
+                <th>Entregué</th>
+                <th>Nota</th>
+              </tr>
+            </thead>
+            <tbody id="historial-list"></tbody>
+          </table>
+        </div>
+
+        <div id="historial-vacio" class="historial-vacio" style="display:none">
+          <span>⇄</span>
+          <p>No hay intercambios registrados hoy</p>
+        </div>
+      </section>
+
+    </div><!-- /wrapper -->
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <script src="intercambio.js"></script>
+  </body>
+</html>

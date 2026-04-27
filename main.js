@@ -289,7 +289,7 @@ async function guardar() {
 function pedirPassword(callback) {
   const pass = prompt("🔒 Ingresá la contraseña para continuar:");
   if (pass === null) return;
-  if (pass === "Phaneus2026") {
+  if (pass === "2026") {
     callback();
   } else {
     showToast("❌ Contraseña incorrecta");

@@ -149,10 +149,6 @@ function renderTable() {
       <td>${p.unidad}</td>
       <td class="mono"><strong>${p.cantidad}</strong><span style="color:#8a97b5;font-size:12px"> / mín ${p.minimo}</span></td>
       <td><span class="badge-status ${status.cls}">${status.label}</span></td>
-      <td class="actions">
-        <button class="btn-action btn-edit"   onclick="pedirPassword(() => openModal('${p.id}'))">Editar</button>
-        <button class="btn-action btn-delete" onclick="pedirPassword(() => eliminarProducto('${p.id}'))">Borrar</button>
-      </td>`;
     tbody.appendChild(tr);
   });
 
@@ -286,15 +282,7 @@ async function guardar() {
 }
 
 // AGREGAR ESTO — función nueva
-function pedirPassword(callback) {
-  const pass = prompt("🔒 Ingresá la contraseña para continuar:");
-  if (pass === null) return;
-  if (pass === "2026") {
-    callback();
-  } else {
-    showToast("❌ Contraseña incorrecta");
-  }
-}
+
 
 async function eliminarProducto(id) {
   try {

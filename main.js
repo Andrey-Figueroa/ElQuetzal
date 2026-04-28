@@ -149,6 +149,10 @@ function renderTable() {
       <td>${p.unidad}</td>
       <td class="mono"><strong>${p.cantidad}</strong><span style="color:#8a97b5;font-size:12px"> / mín ${p.minimo}</span></td>
       <td><span class="badge-status ${status.cls}">${status.label}</span></td>
+      <td class="actions">
+        <button class="btn-action btn-edit"   onclick="openModal('${p.id}')">Editar</button>
+        <button class="btn-action btn-delete" onclick="eliminarProducto('${p.id}')">Borrar</button>
+      </td>`;
     tbody.appendChild(tr);
   });
 
@@ -223,10 +227,10 @@ function openModal(id = null, fromScan = false) {
   document.getElementById("f-barcode").value = p.barcode || "";
   document.getElementById("f-nombre").value = p.nombre || "";
   document.getElementById("f-unidad").value = p.unidad || "Unidad";
-  document.getElementById("f-pventa").value = p.pventa ?? "";
-  document.getElementById("f-pcosto").value = p.pcosto ?? "";
-  document.getElementById("f-cantidad").value = p.cantidad ?? "";
-  document.getElementById("f-minimo").value = p.minimo ?? 5;
+  document.getElementById("f-pventa").value = p.pventa !== undefined ? p.pventa : "";
+  document.getElementById("f-pcosto").value = p.pcosto !== undefined ? p.pcosto : "";
+  document.getElementById("f-cantidad").value = p.cantidad !== undefined ? p.cantidad : "";
+  document.getElementById("f-minimo").value = p.minimo !== undefined ? p.minimo : 5;
 
   refreshCategorySelects();
   if (p.categoria) document.getElementById("f-cat").value = p.categoria;
@@ -234,7 +238,7 @@ function openModal(id = null, fromScan = false) {
   document.getElementById("overlay").classList.add("open");
   setTimeout(
     () =>
-      document.getElementById(p?.barcode ? "f-nombre" : "f-barcode").focus(),
+      document.getElementById(p && p.barcode ? "f-nombre" : "f-barcode").focus(),
     100,
   );
 }
@@ -280,8 +284,6 @@ async function guardar() {
     showToast("❌ Error al guardar. Intentá de nuevo.");
   }
 }
-
-// AGREGAR ESTO — función nueva
 
 
 async function eliminarProducto(id) {

@@ -1,1126 +1,150 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sistema CarWash — Menú</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap"
-        rel="stylesheet" />
-    <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --bg: #080600;
-            --card: #130f00;
-            --card-hover: #1c1500;
-            --border: #2e2400;
-            --accent: #c9a84c;
-            --text: #f5e8c8;
-            --muted: #8a7540;
-            --gold: #c9a84c;
-        }
-
-        body {
-            background: var(--bg);
-            font-family: "DM Sans", sans-serif;
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 0 80px;
-            overflow-x: hidden;
-        }
-
-        .header {
-            width: 100%;
-            position: relative;
-            height: 260px;
-            overflow: hidden;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 28px;
-        }
-
-        .header-bg {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, transparent 20%, var(--bg) 100%), linear-gradient(135deg, #0d0900 0%, #2a1f00 50%, #c9a84c22 100%);
-        }
-
-        .drops {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .drop {
-            position: absolute;
-            top: -20px;
-            width: 2px;
-            border-radius: 50px;
-            background: linear-gradient(to bottom, transparent, var(--accent));
-            opacity: 0;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.6;
-            }
-
-            100% {
-                transform: translateY(280px);
-                opacity: 0;
-            }
-        }
-
-        .header-content {
-            position: relative;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-img {
-            width: 130px;
-            height: 130px;
-            object-fit: contain;
-            border-radius: 16px;
-            border: 1px solid rgba(201, 168, 76, 0.2);
-            background: #000;
-            padding: 6px;
-            box-shadow: 0 0 30px rgba(201, 168, 76, 0.15);
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(201, 168, 76, 0.1);
-            border: 1px solid rgba(201, 168, 76, 0.3);
-            border-radius: 50px;
-            padding: 4px 14px;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--accent);
-        }
-
-        h1 {
-            font-family: "Bebas Neue", sans-serif;
-            font-size: clamp(28px, 6vw, 44px);
-            letter-spacing: 4px;
-            line-height: 1;
-            background: linear-gradient(135deg, #fff 30%, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .datetime {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: rgba(201, 168, 76, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 20px;
-            width: calc(100% - 40px);
-            max-width: 640px;
-            margin-bottom: 20px;
-        }
-
-        .datetime-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        .datetime-item span {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .datetime-sep {
-            width: 1px;
-            height: 20px;
-            background: var(--border);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            width: 100%;
-            max-width: 640px;
-            padding: 0 20px;
-        }
-
-        .card {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 24px 20px;
-            text-decoration: none;
-            color: var(--text);
-            transition: all 0.2s ease;
-            animation: slideUp 0.4s ease forwards;
-            cursor: pointer;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent);
-            background: var(--card-hover);
-        }
-
-        .card.full {
-            grid-column: 1 / -1;
-        }
-
-        .icon-wrap {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: rgba(201, 168, 76, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-
-        .card-title {
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .card-sub {
-            font-size: 12px;
-            color: var(--muted);
-        }
-
-        /* Admin card */
-        .card.admin-card {
-            border-color: rgba(201, 168, 76, 0.3);
-            background: linear-gradient(135deg, rgba(201, 168, 76, 0.06), rgba(180, 140, 30, 0.03));
-        }
-
-        .card.admin-card:hover {
-            border-color: var(--gold);
-            background: rgba(201, 168, 76, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .card.admin-card .icon-wrap {
-            background: rgba(201, 168, 76, 0.12);
-        }
-
-        .card.admin-card .card-title {
-            color: var(--gold);
-            font-size: 16px;
-        }
-
-        .card.admin-card .card-sub {
-            color: rgba(201, 168, 76, 0.6);
-        }
-
-        .lock-badge {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            color: var(--gold);
-            background: rgba(201, 168, 76, 0.1);
-            border: 1px solid rgba(201, 168, 76, 0.2);
-            border-radius: 20px;
-            padding: 4px 12px;
-            white-space: nowrap;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse2 {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.5)
-            }
-
-            50% {
-                box-shadow: 0 0 0 5px rgba(0, 230, 118, 0)
-            }
-        }
-
-        .fab-wrap {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            align-items: flex-end;
-        }
-
-        .fab-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--card);
-            border: 1px solid var(--accent);
-            border-radius: 50px;
-            padding: 11px 20px;
-            cursor: pointer;
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            box-shadow: 0 4px 20px rgba(201, 168, 76, 0.15);
-        }
-
-        .fab-btn:hover {
-            background: var(--card-hover);
-            box-shadow: 0 4px 24px rgba(201, 168, 76, 0.3);
-        }
-
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 18px;
-            height: 2px;
-            background: var(--accent);
-            border-radius: 2px;
-            transition: all 0.2s;
-        }
-
-        .fab-menu {
-            position: absolute;
-            bottom: calc(100% + 12px);
-            right: 0;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            overflow: hidden;
-            min-width: 220px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transform: translateY(10px) scale(0.97);
-            pointer-events: none;
-            transition: all 0.22s cubic-bezier(.4, 0, .2, 1);
-            transform-origin: bottom right;
-        }
-
-        .fab-wrap.open .fab-menu {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            pointer-events: auto;
-        }
-
-        .fab-wrap.open .hamburger span:nth-child(1) {
-            transform: translateY(6px) rotate(45deg);
-        }
-
-        .fab-wrap.open .hamburger span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .fab-wrap.open .hamburger span:nth-child(3) {
-            transform: translateY(-6px) rotate(-45deg);
-        }
-
-        .fab-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 18px;
-            cursor: pointer;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-bottom: 1px solid var(--border);
-            transition: background 0.15s;
-        }
-
-        .fab-item:last-child {
-            border-bottom: none;
-        }
-
-        .fab-item:hover {
-            background: var(--card-hover);
-            color: var(--accent);
-        }
-
-        .fab-item .fi {
-            font-size: 18px;
-            width: 28px;
-            text-align: center;
-        }
-
-        .soporte-btn {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            padding: 11px 20px;
-            cursor: pointer;
-            color: var(--muted);
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .soporte-btn:hover {
-            color: var(--text);
-            border-color: var(--accent);
-            box-shadow: 0 4px 24px rgba(201, 168, 76, 0.2);
-        }
-
-        .gear-icon {
-            font-size: 18px;
-            transition: transform 0.5s ease;
-            display: inline-block;
-        }
-
-        .soporte-btn:hover .gear-icon {
-            transform: rotate(90deg);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .pw-box {
-            background: var(--card);
-            border: 1px solid rgba(201, 168, 76, 0.3);
-            border-radius: 24px;
-            width: 360px;
-            max-width: calc(100vw - 40px);
-            overflow: hidden;
-        }
-
-        .pw-header {
-            padding: 28px 28px 20px;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .pw-header .lock-big {
-            font-size: 42px;
-            margin-bottom: 12px;
-        }
-
-        .pw-header h2 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gold);
-            letter-spacing: 1px;
-        }
-
-        .pw-header p {
-            font-size: 13px;
-            color: var(--muted);
-            margin-top: 4px;
-        }
-
-        .pw-body {
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .pw-input {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            padding: 14px 18px;
-            font-size: 16px;
-            font-family: inherit;
-            outline: none;
-            width: 100%;
-            letter-spacing: 4px;
-            text-align: center;
-            transition: border-color 0.2s;
-        }
-
-        .pw-input:focus {
-            border-color: var(--gold);
-        }
-
-        .pw-input.error {
-            border-color: #ff4d6d;
-            animation: shake 0.3s ease;
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0)
-            }
-
-            25% {
-                transform: translateX(-8px)
-            }
-
-            75% {
-                transform: translateX(8px)
-            }
-        }
-
-        .pw-error {
-            color: #ff4d6d;
-            font-size: 12px;
-            text-align: center;
-            display: none;
-        }
-
-        .pw-error.show {
-            display: block;
-        }
-
-        .btn-pw {
-            background: linear-gradient(135deg, #c9a84c, #a07828);
-            color: #000;
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            transition: opacity 0.2s;
-            width: 100%;
-        }
-
-        .btn-pw:hover {
-            opacity: 0.88;
-        }
-
-        .btn-cancel {
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 14px;
-            color: var(--muted);
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.15s;
-            width: 100%;
-        }
-
-        .btn-cancel:hover {
-            border-color: var(--accent);
-            color: var(--text);
-        }
-
-        .calc-body {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            width: 320px;
-        }
-
-        .calc-screen {
-            width: 100%;
-            height: 70px;
-            background: #000;
-            color: var(--accent);
-            font-size: 32px;
-            text-align: right;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            font-family: monospace;
-        }
-
-        .calc-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .calc-btn {
-            padding: 18px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.15s;
-        }
-
-        .calc-btn:hover {
-            background: var(--card-hover);
-        }
-
-        .calc-btn.op {
-            color: var(--accent);
-        }
-
-        .calc-btn.equal {
-            background: var(--accent);
-            color: #000;
-            font-weight: 700;
-        }
-
-        .calc-btn.equal:hover {
-            background: #a07828;
-        }
-
-        .modal-box {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            width: 420px;
-            max-width: calc(100vw - 40px);
-            overflow: hidden;
-        }
-
-        .modal-header {
-            padding: 22px 24px 18px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .modal-header h2 {
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 20px;
-            transition: color 0.15s;
-        }
-
-        .modal-close:hover {
-            color: var(--text);
-        }
-
-        .modal-body {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-select,
-        .form-input,
-        .form-textarea {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            padding: 10px 14px;
-            font-size: 14px;
-            font-family: inherit;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-select:focus,
-        .form-input:focus,
-        .form-textarea:focus {
-            border-color: var(--accent);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-select option {
-            background: var(--card);
-        }
-
-        .btn-send {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: 12px;
-            padding: 13px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            transition: background 0.2s;
-        }
-
-        .btn-send:hover {
-            background: #a07828;
-        }
-
-        .success-msg {
-            display: none;
-            text-align: center;
-            padding: 30px 20px;
-        }
-
-        .success-msg .check {
-            font-size: 48px;
-            margin-bottom: 12px;
-        }
-
-        .success-msg p {
-            color: var(--muted);
-            font-size: 14px;
-            margin-top: 6px;
-        }
-
-        .horario-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        .horario-table th {
-            color: var(--accent);
-            font-weight: 600;
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
-            text-align: left;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .horario-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid rgba(46, 36, 0, 0.5);
-        }
-
-        .horario-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .turno-tag {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .turno-m {
-            background: rgba(255, 200, 50, 0.15);
-            color: #ffc832;
-        }
-
-        .turno-t {
-            background: rgba(201, 168, 76, 0.12);
-            color: var(--accent);
-        }
-
-        .turno-libre {
-            background: rgba(138, 117, 64, 0.15);
-            color: var(--muted);
-        }
-    </style>
-</head>
-
-<body>
-    <div class="header">
-        <div class="header-bg"></div>
-        <div class="drops" id="drops"></div>
-        <div class="header-content">
-            <img src="logo.jpg" alt="Sus Amigos Detailer's Center" class="logo-img" />
-            <div class="badge">Sistema CarWash</div>
-            <h1>REGISTRO DE SERVICIO</h1>
+    <title>El Quetzal — Menú Principal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="menu.css" />
+  </head>
+  <body>
+    <!-- ─── FONDO ANIMADO ─────────────────────────────────── -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- ─── CONTENIDO ────────────────────────────────────── -->
+    <div class="wrapper">
+
+      <!-- CABECERA -->
+      <header class="header">
+        <div class="brand">
+          <div class="brand-icon">🦜</div>
+          <div class="brand-text">
+            <h1 class="brand-name">El Quetzal</h1>
+            <p class="brand-sub">Sistema de Administración</p>
+          </div>
         </div>
-    </div>
-
-    <div class="datetime">
-        <div class="datetime-item">📅 <span id="fecha"></span></div>
-        <div class="datetime-sep"></div>
-        <div class="datetime-item">🕐 <span id="hora"></span></div>
-    </div>
-
-    <div class="grid">
-        <a class="card full"
-            href="https://docs.google.com/spreadsheets/d/1VGBiKE8xOYRk22-EZFMGdXVPosUvXbHj-aeEOOQYzr4/edit?usp=drive_link"
-            target="_blank">
-            <div class="icon-wrap">📊</div>
-            <div class="card-text">
-                <div class="card-title">Control General</div>
-                <div class="card-sub">Google Sheets</div>
-            </div>
-        </a>
-        <a class="card" href="orden.html">
-            <div class="icon-wrap">📋</div>
-            <div class="card-text">
-                <div class="card-title">Tomar Orden</div>
-            </div>
-        </a>
-        <a class="card" href="venta.html">
-            <div class="icon-wrap">🛒</div>
-            <div class="card-text">
-                <div class="card-title">Venta Productos</div>
-            </div>
-        </a>
-        <a class="card" href="domicilio.html">
-            <div class="icon-wrap">🚐</div>
-            <div class="card-text">
-                <div class="card-title">Servicio Domicilio</div>
-            </div>
-        </a>
-        <a class="card" href="gastos.html">
-            <div class="icon-wrap">💸</div>
-            <div class="card-text">
-                <div class="card-title">Registrar Gastos</div>
-            </div>
-        </a>
-        <a class="card full" href="cierre.html">
-            <div class="icon-wrap">🔒</div>
-            <div class="card-text">
-                <div class="card-title">Cierre de Operaciones</div>
-            </div>
-        </a>
-
-        <a class="card full" href="pizarra.html"
-            style="border-color:rgba(201,168,76,0.3);background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(160,120,40,0.05));">
-            <div class="icon-wrap" style="background:rgba(201,168,76,0.15);font-size:28px;">🗺️</div>
-            <div class="card-text">
-                <div class="card-title" style="color:#c9a84c;font-size:16px;">Pizarra del Local</div>
-                <div class="card-sub">Estado en tiempo real · Cobros · Cambio de estado</div>
-            </div>
-            <div
-                style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:#c9a84c;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:20px;padding:4px 12px;white-space:nowrap;">
-                <div style="width:6px;height:6px;border-radius:50%;background:#00e676;animation:pulse2 2s infinite">
-                </div>
-                En vivo
-            </div>
-        </a>
-
-        <div class="card full admin-card" onclick="openAdmin()">
-            <div class="icon-wrap">🔐</div>
-            <div class="card-text">
-                <div class="card-title">Administración Privada</div>
-                <div class="card-sub">Acceso restringido — solo administradores</div>
-            </div>
-            <div class="lock-badge">🛡️ Admin</div>
+        <div class="header-meta">
+          <span id="fecha-hora" class="fecha-hora"></span>
         </div>
-    </div>
+      </header>
 
-    <!-- ══ FAB ══ -->
-    <div class="fab-wrap" id="fabWrap">
-        <div class="fab-menu">
-            <a class="fab-item" onclick="openCalc()"><span class="fi">🧮</span> Calculadora</a>
-            <a class="fab-item" href="agregarCxc.html"><span class="fi">📝</span> Agregar Cuenta por Cobrar Manual</a>
-            <a class="fab-item" href="saldar.html"><span class="fi">💳</span> Saldar cuenta por cobrar</a>
-            <a class="fab-item" href="verCxc.html"><span class="fi">📄</span> Ver cuentas por cobrar</a>
-            <a class="fab-item" onclick="openHorario()"><span class="fi">📅</span> Ver horario próxima semana</a>
-        </div>
-        <a href="mecanica.html" class="fab-btn" style="font-size: 13px; padding: 8px 16px; text-decoration: none;">
-            📝 Área de Mecánica
+      <!-- SALUDO -->
+      <div class="saludo">
+        <p>¿Qué vas a hacer hoy?</p>
+      </div>
+
+      <!-- ACCESO RÁPIDO: DASHBOARD DIARIO -->
+      <a href="cierre.html" class="dashboard-btn" id="btn-dashboard">
+        <span class="db-icon">📊</span>
+        <span class="db-text">
+          <strong>Ver dashboard diario</strong>
+          <small>Resumen de ventas de hoy</small>
+        </span>
+        <span class="db-arrow">→</span>
+      </a>
+
+      <!-- GRID DE MÓDULOS -->
+      <main class="modules-grid">
+
+        <!-- Punto de Venta -->
+        <a href="venta.html" class="module-card" id="card-venta">
+          <div class="card-glow glow-blue"></div>
+          <div class="card-icon">🛒</div>
+          <div class="card-body">
+            <h2 class="card-title">Punto de Venta</h2>
+            <p class="card-desc">Registrá ventas, escaneá productos y procesá pagos.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
         </a>
-        <button class="fab-btn" onclick="document.getElementById('fabWrap').classList.toggle('open')" id="fabBtn">
-            <div class="hamburger"><span></span><span></span><span></span></div>
-            Menú rápido
-        </button>
+
+        <!-- Inventario -->
+        <a href="inventario.html" class="module-card" id="card-inventario">
+          <div class="card-glow glow-green"></div>
+          <div class="card-icon">📦</div>
+          <div class="card-body">
+            <h2 class="card-title">Inventario</h2>
+            <p class="card-desc">Gestioná productos, stock mínimo y categorías.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Cierre de Caja -->
+        <a href="cierre.html" class="module-card" id="card-cierre">
+          <div class="card-glow glow-purple"></div>
+          <div class="card-icon">📊</div>
+          <div class="card-body">
+            <h2 class="card-title">Cierre Diario</h2>
+            <p class="card-desc">Resumen diario, utilidades por método de pago y ventas.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Intercambios -->
+        <a href="intercambio.html" class="module-card" id="card-intercambios">
+          <div class="card-glow glow-orange"></div>
+          <div class="card-icon">⇄</div>
+          <div class="card-body">
+            <h2 class="card-title">Intercambios</h2>
+            <p class="card-desc">Registrá cambios de método de pago (SINPE ↔ Efectivo) sin afectar utilidades.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Reportes -->
+        <a href="reportes.html" class="module-card" id="card-reportes">
+          <div class="card-glow glow-teal"></div>
+          <div class="card-icon">📈</div>
+          <div class="card-body">
+            <h2 class="card-title">Reportes</h2>
+            <p class="card-desc">Historial filtrable por fechas, totales del período y detalle de transacciones.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-active">Activo</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <!-- Configuración (futuro) -->
+        <a href="#" class="module-card coming-soon" id="card-config">
+          <div class="card-glow glow-gray"></div>
+          <div class="card-icon">⚙️</div>
+          <div class="card-body">
+            <h2 class="card-title">Configuración</h2>
+            <p class="card-desc">Nombre del negocio, impresora, usuarios y permisos.</p>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-soon">Próximamente</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+      </main>
+
+      <!-- PIE -->
+      <footer class="footer">
+        <span>El Quetzal &copy; 2025 · NeuraLoom</span>
+      </footer>
     </div>
 
-    <!-- ══ SOPORTE ══ -->
-    <button class="soporte-btn" onclick="openSoporte()">
-        <span class="gear-icon">⚙️</span> Soporte
-    </button>
-
-    <!-- ══ MODAL: PASSWORD ADMIN ══ -->
-    <div id="adminModal" class="modal">
-        <div class="pw-box">
-            <div class="pw-header">
-                <div class="lock-big">🔐</div>
-                <h2>ADMINISTRACIÓN PRIVADA</h2>
-                <p>Ingresa la contraseña de administrador para continuar</p>
-            </div>
-            <div class="pw-body">
-                <input type="password" class="pw-input" id="pwInput" placeholder="••••••••" maxlength="20"
-                    onkeydown="if(event.key==='Enter')checkPw()" />
-                <div class="pw-error" id="pwError">❌ Contraseña incorrecta. Intenta de nuevo.</div>
-                <button class="btn-pw" onclick="checkPw()">🔓 Ingresar</button>
-                <button class="btn-cancel" onclick="closeModal('adminModal')">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ══ MODAL: CALCULADORA ══ -->
-    <div id="calcModal" class="modal">
-        <div class="calc-body">
-            <input type="text" id="screen" class="calc-screen" readonly value="0" />
-            <div class="calc-buttons">
-                <button class="calc-btn" onclick="clearCalc()">C</button>
-                <button class="calc-btn op" onclick="press('/')">/</button>
-                <button class="calc-btn op" onclick="press('*')">×</button>
-                <button class="calc-btn" onclick="closeModal('calcModal')">❌</button>
-                <button class="calc-btn" onclick="press('7')">7</button><button class="calc-btn"
-                    onclick="press('8')">8</button><button class="calc-btn" onclick="press('9')">9</button>
-                <button class="calc-btn op" onclick="press('-')">-</button>
-                <button class="calc-btn" onclick="press('4')">4</button><button class="calc-btn"
-                    onclick="press('5')">5</button><button class="calc-btn" onclick="press('6')">6</button>
-                <button class="calc-btn op" onclick="press('+')">+</button>
-                <button class="calc-btn" onclick="press('1')">1</button><button class="calc-btn"
-                    onclick="press('2')">2</button><button class="calc-btn" onclick="press('3')">3</button>
-                <button class="calc-btn equal" onclick="calculate()">=</button>
-                <button class="calc-btn" style="grid-column:span 2" onclick="press('0')">0</button>
-                <button class="calc-btn" onclick="press('.')">.</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ══ MODAL: HORARIO ══ -->
-    <div id="horarioModal" class="modal">
-        <div class="modal-box" style="max-width:660px;width:calc(100vw - 40px)">
-            <div class="modal-header">
-                <h2>📅 Horario — <span id="horWeekLabel">Próxima Semana</span></h2>
-                <button class="modal-close" onclick="closeModal('horarioModal')">✕</button>
-            </div>
-            <div class="modal-body" style="padding-top:12px;overflow-x:auto" id="horarioBody">
-                <p style="color:var(--muted);text-align:center;font-size:13px;padding:20px 0">No hay horario guardado
-                    aún.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ══ MODAL: SOPORTE ══ -->
-    <div id="soporteModal" class="modal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2>⚙️ Soporte — Reportar Error</h2>
-                <button class="modal-close" onclick="closeModal('soporteModal')">✕</button>
-            </div>
-            <div class="modal-body" id="soporteBody">
-                <div class="form-group">
-                    <label class="form-label">Tipo de problema</label>
-                    <select class="form-select" id="tipoError">
-                        <option value="">Seleccionar categoría...</option>
-                        <option>Error en cálculo o cobro</option>
-                        <option>Botón o enlace no funciona</option>
-                        <option>Datos incorrectos en Google Sheets</option>
-                        <option>Problema con cierre de operaciones</option>
-                        <option>Error visual / diseño roto</option>
-                        <option>Otro</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">¿En qué módulo ocurrió?</label>
-                    <select class="form-select">
-                        <option>Menú principal</option>
-                        <option>Tomar Orden</option>
-                        <option>Venta Productos</option>
-                        <option>Servicio Domicilio</option>
-                        <option>Registrar Gastos</option>
-                        <option>Cierre de Operaciones</option>
-                        <option>Pizarra del Local</option>
-                        <option>Control General (Sheets)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Descripción del error</label>
-                    <textarea class="form-textarea" id="descError" placeholder="Describe qué pasó..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Tu nombre (opcional)</label>
-                    <input class="form-input" type="text" placeholder="Ej: María" id="nombreReporte" />
-                </div>
-                <button class="btn-send" onclick="enviarReporte()">📨 Enviar Reporte</button>
-            </div>
-            <div class="success-msg" id="soporteOk">
-                <div class="check">✅</div>
-                <h3>¡Reporte enviado!</h3>
-                <p>Gracias por reportar el problema.<br>Lo revisaremos a la brevedad.</p>
-                <button class="btn-send" style="margin-top:20px;width:100%"
-                    onclick="closeModal('soporteModal')">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const container = document.getElementById("drops");
-        for (let i = 0; i < 20; i++) {
-            const d = document.createElement("div"); d.className = "drop";
-            d.style.left = Math.random() * 100 + "%";
-            d.style.animationDuration = Math.random() * 2 + 1 + "s";
-            container.appendChild(d);
-        }
-
-        function updateTime() {
-            const now = new Date();
-            document.getElementById("fecha").textContent = now.toLocaleDateString("es-CR", { weekday: "long", day: "numeric", month: "long" });
-            document.getElementById("hora").textContent = now.toLocaleTimeString("es-CR");
-        }
-        setInterval(updateTime, 1000); updateTime();
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove("show");
-            if (id === "soporteModal") {
-                document.getElementById("soporteBody").style.display = "";
-                document.getElementById("soporteOk").style.display = "none";
-            }
-            if (id === "adminModal") {
-                document.getElementById("pwInput").value = "";
-                document.getElementById("pwError").classList.remove("show");
-                document.getElementById("pwInput").classList.remove("error");
-            }
-        }
-        document.querySelectorAll(".modal").forEach(m => {
-            m.addEventListener("click", e => { if (e.target === m) closeModal(m.id); });
-        });
-
-        function closeFab() { document.getElementById("fabWrap").classList.remove("open"); }
-        function openCalc() { closeFab(); document.getElementById("calcModal").classList.add("show"); }
-        function openAdmin() { document.getElementById("adminModal").classList.add("show"); setTimeout(() => document.getElementById("pwInput").focus(), 100); }
-        document.addEventListener("click", e => {
-            const fab = document.getElementById("fabWrap");
-            if (!fab.contains(e.target)) fab.classList.remove("open");
-        });
-        function openHorario() {
-            closeFab();
-            document.getElementById("horarioModal").classList.add("show");
-            renderHorarioModal();
-        }
-        function renderHorarioModal() {
-            const raw = localStorage.getItem("carwash_schedule");
-            const body = document.getElementById("horarioBody");
-            if (!raw) return;
-            try {
-                const data = JSON.parse(raw);
-                if (data.week) document.getElementById("horWeekLabel").textContent = data.week;
-                const DAYS_MAP = { L: "Lunes", M: "Martes", K: "Miércoles", J: "Jueves", V: "Viernes", S: "Sábado", D: "Domingo" };
-                const SHIFT_MAP = { "7-5": "7:00 – 5:00 pm", "8-6": "8:00 – 6:00 pm", "7-6": "7:00 – 6:00 pm" };
-                let html = '<table class="horario-table"><thead><tr><th>Día</th><th>Turno</th><th>Empleados</th></tr></thead><tbody>';
-                const ORDER = ["L", "M", "K", "J", "V", "S", "D"];
-                ORDER.forEach(dayKey => {
-                    const shifts = data.schedule[dayKey];
-                    if (!shifts) return;
-                    Object.entries(shifts).forEach(([shiftId, emps]) => {
-                        const color = shiftId === "7-5" ? "turno-m" : shiftId === "8-6" ? "turno-t" : "turno-libre";
-                        html += '<tr><td style="font-weight:600">' + DAYS_MAP[dayKey] + '</td>';
-                        html += '<td><span class="turno-tag ' + color + '">' + (SHIFT_MAP[shiftId] || shiftId) + '</span></td>';
-                        html += '<td>' + (emps.length ? emps.join(", ") : '<span style="color:var(--muted)">—</span>') + '</td></tr>';
-                    });
-                });
-                html += '</tbody></table>';
-                body.innerHTML = html;
-            } catch (e) { console.error(e); }
-        }
-        function openSoporte() { closeFab(); document.getElementById("soporteModal").classList.add("show"); }
-
-        function checkPw() {
-            const val = document.getElementById("pwInput").value;
-            if (val === "EdAn2026") {
-                closeModal("adminModal");
-                window.location.href = "admin.html";
-            } else {
-                const inp = document.getElementById("pwInput");
-                const err = document.getElementById("pwError");
-                inp.classList.add("error");
-                err.classList.add("show");
-                setTimeout(() => inp.classList.remove("error"), 400);
-                inp.value = "";
-                inp.focus();
-            }
-        }
-
-        const screen = document.getElementById("screen");
-        function press(v) { screen.value === "0" ? (screen.value = v) : (screen.value += v); }
-        function clearCalc() { screen.value = "0"; }
-        function calculate() { try { screen.value = eval(screen.value); } catch { screen.value = "Error"; } }
-
-        function enviarReporte() {
-            const tipo = document.getElementById("tipoError").value;
-            const desc = document.getElementById("descError").value.trim();
-            if (!tipo || !desc) { alert("Por favor seleccione el tipo de error y escriba una descripción."); return; }
-            document.getElementById("soporteBody").style.display = "none";
-            document.getElementById("soporteOk").style.display = "block";
-        }
-    </script>
-</body>
-
+    <script src="menu.js"></script>
+  </body>
 </html>

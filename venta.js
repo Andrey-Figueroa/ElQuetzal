@@ -137,7 +137,7 @@ function agregarProductoNoEtiquetado(monto) {
       id: "no-etiquetado",
       nombre: "Producto no etiquetado",
       pventa: monto,
-      pcosto: 0,
+      pcosto: monto * 0.75,
       cantidad: Infinity, // no afecta inventario
       noEtiquetado: true,
     },

@@ -86,6 +86,74 @@ async function fetchVentasDeHoy() {
   return res.json();
 }
 
+async function eliminarVenta(id) {
+  if (!confirm("¿Seguro que deseas eliminar esta venta? Esto restaurará el inventario de los productos etiquetados.")) return;
+
+  const venta = _ventasSnapshot.find((v) => v.id === id);
+  if (!venta) return;
+
+  // Mostramos un indicador simple de carga
+  document.getElementById("btn-refresh").disabled = true;
+
+  try {
+    // Restaurar inventario para productos etiquetados
+    if (venta.items && Array.isArray(venta.items)) {
+      for (const item of venta.items) {
+        if (!item.no_etiquetado) {
+          // Obtener cantidad actual del producto
+          const prodRes = await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${item.id}&select=cantidad`, { headers: HEADERS });
+          const prodData = await prodRes.json();
+          if (prodData && prodData[0]) {
+            const currentStock = prodData[0].cantidad;
+            const newStock = currentStock + item.cantidad;
+            // Actualizar stock
+            await fetch(`${SUPABASE_URL}/rest/v1/productos?id=eq.${item.id}`, {
+              method: "PATCH",
+              headers: { ...HEADERS, Prefer: "return=minimal" },
+              body: JSON.stringify({ cantidad: newStock })
+            });
+            // Registrar movimiento de entrada por devolución
+            await fetch(`${SUPABASE_URL}/rest/v1/movimientos`, {
+              method: "POST",
+              headers: { ...HEADERS, Prefer: "return=minimal" },
+              body: JSON.stringify({
+                id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+                producto_id: item.id,
+                producto_nombre: item.nombre,
+                cantidad: item.cantidad,
+                tipo: "ENTRADA",
+                motivo: "DEVOLUCION_VENTA_ELIMINADA",
+                venta_id: id
+              })
+            });
+          }
+        }
+      }
+    }
+
+    // Eliminar movimientos de salida asociados a la venta
+    await fetch(`${SUPABASE_URL}/rest/v1/movimientos?venta_id=eq.${id}`, {
+      method: "DELETE",
+      headers: HEADERS
+    });
+
+    // Eliminar la venta
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/ventas?id=eq.${id}`, {
+      method: "DELETE",
+      headers: HEADERS
+    });
+
+    if (!res.ok) throw new Error("Error al eliminar venta");
+
+    alert("Venta eliminada y stock restaurado.");
+    cargarDatos(); // Recargar la tabla
+  } catch (err) {
+    console.error(err);
+    alert("Error al eliminar la venta: " + err.message);
+    document.getElementById("btn-refresh").disabled = false;
+  }
+}
+
 // ─── API — INTERCAMBIOS ─────────────────────────────────────────
 async function fetchIntercambiosDeHoy() {
   const desde = inicioDeHoy().toISOString();
@@ -217,6 +285,9 @@ function renderTabla(ventas) {
       <td class="td-items">${resumenItems(v.items)}</td>
       <td class="td-metodo">${iconosMetodo(v)}</td>
       <td class="td-total">${fmt(v.total)}</td>
+      <td class="td-acciones" style="text-align:center;">
+        <button class="btn-eliminar-venta" onclick="eliminarVenta('${v.id}')" style="background:transparent;border:none;cursor:pointer;font-size:16px;" title="Eliminar Venta">🗑️</button>
+      </td>
     </tr>
   `,
     )
